@@ -1,5 +1,4 @@
-#ifndef ARBOLPERSONA_H
-#define ARBOLPERSONA_H
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,39 +17,29 @@ struct Persona {
     int edad;
     char genero;
     char fn[8];
-    struct Alumno *alumno;
-    struct Persona *izq;
-    struct Persona *der;
+    struct Alumno *ptrAlum;
+    struct Persona *ptrSig;
 };
-
-int menu(void) {
-    int op;
-    printf("\n--- Menu Arbol de Personas ---\n");
-    printf("1. Añadir persona\n");
-	printf("2. Mostrar persona\n");
-	printf("3. Eliminar persona\n");
-    printf("4. Salir\n");
-    printf("Opcion: ");
-    scanf("%d", &op);
-    return op;
-}
 
 struct Persona* crearPersona(void) {
     struct Persona *ptrTemp;
-	char nombre[100];
+    char nombre[100];
+
     ptrTemp = (struct Persona*)malloc(sizeof(struct Persona));
     if (ptrTemp == NULL) {
         printf("Error: no se pudo asignar memoria.\n");
         return NULL;
     }
 
-    ptrTemp->alumno = NULL;
-    ptrTemp->izq = NULL;
-    ptrTemp->der = NULL;
+    ptrTemp->ptrAlum = NULL;
+    ptrTemp->ptrSig = NULL;
 
     printf("Ingrese el nombre: ");
-	fgets(nombre, sizeof(nombre), stdin);
-	ptrTemp->nombre = (char*)malloc(sizeof(strlen(nombre) + 1));
+    while (getchar() != '\n');
+    fgets(nombre, sizeof(nombre), stdin);
+    nombre[strcspn(nombre, "\n")] = '\0';
+    ptrTemp->nombre = (char*)malloc((strlen(nombre) + 1) * sizeof(char));
+    strcpy(ptrTemp->nombre, nombre);
 
     printf("Ingrese la edad: ");
     scanf("%d", &ptrTemp->edad);
@@ -58,31 +47,38 @@ struct Persona* crearPersona(void) {
     printf("Ingrese el genero (M/F): ");
     scanf(" %c", &ptrTemp->genero);
 
-    printf("Ingrese la fecha de nacimiento (DDMMAA): ");
+    printf("Ingrese la fecha de nacimiento (DD/MM/AA): ");
     scanf("%s", ptrTemp->fn);
 
     return ptrTemp;
 }
 
-void mostrarPersonas(struct Persona *raiz) {
-    if (raiz != NULL){
-		mostrarPersonas(raiz->izq);
-		printf("Nombre: %s | Edad: %d | Genero: %c\n", raiz->nombre, raiz->edad, raiz->genero);
-		mostrarPersonas(raiz->der);
-	}
+void Altas(struct Persona **frente, struct Persona **final) {
+    struct Persona *nuevo = crearPersona();
+    if (nuevo == NULL) return;
+
+    if (*final == NULL) {
+        *frente = nuevo;
+        *final = nuevo;
+    } else {
+        (*final)->ptrSig = nuevo;
+        *final = nuevo;
+    }
+    printf("Persona agregada a la cola.\n");
 }
 
-void eliminarPersona(struct Persona *nodo) {
-    if (nodo == NULL)
+void Mostrar(struct Persona *frente) {
+    if (frente == NULL) {
+        printf("La cola esta vacia.\n");
         return;
+    }
 
-    eliminarPersona(nodo->izq);
-    eliminarPersona(nodo->der);
-
-    if (nodo->nombre != NULL)
-        free(nodo->nombre);
-
-    free(nodo);
+    printf("\n--- Cola de personas ---\n");
+    int i = 1;
+    while (frente != NULL) {
+        printf("%d. %s | Edad: %d | Genero: %c\n",
+               i, frente->nombre, frente->edad, frente->genero);
+        frente = frente->ptrSig;
+        i++;
+    }
 }
-
-#endif
