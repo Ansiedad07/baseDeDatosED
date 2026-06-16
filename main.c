@@ -1,7 +1,6 @@
-#include "lib/menus.h"
-#include "lib/altas.h"
-#include "arbolPersona.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 struct Alumno {
     char matricula[10];
@@ -20,9 +19,13 @@ struct Persona {
     struct Persona *ptrSig;
 };
 
+#include "lib/menus.h"
+#include "lib/altas.h"
+#include "lib/bajas.h"
+#include "lib/mostrar.h"
+
 int main(void) {
     struct Persona *ptr = NULL;
-
     int opcion;
 
     do {
@@ -33,8 +36,10 @@ int main(void) {
             Altas(&ptr);
             break;
         case 2:
+            Mostrar(ptr);
             break;
         case 3:
+            Bajas(&ptr);
             break;
         case 4:
             printf("Saliendo...\n");
@@ -44,11 +49,13 @@ int main(void) {
         }
     } while (opcion != 4);
 
-    while (frente != NULL) {
-        struct Persona *temp = frente;
-        frente = frente->ptrSig;
+    while (ptr != NULL) {
+        struct Persona *temp = ptr;
+        ptr = ptr->ptrSig;
         if (temp->nombre != NULL)
             free(temp->nombre);
+        if (temp->ptrAlum != NULL)
+            free(temp->ptrAlum);
         free(temp);
     }
 
