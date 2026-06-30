@@ -32,7 +32,6 @@ void BajaUna(struct Persona **ptr){
 }
 
 /* Eliminar varias personas */
-
 void BajaVarias(struct Persona **ptr){
     int cantidad;
 

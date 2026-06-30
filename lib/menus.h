@@ -1,6 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 int menuPrincipal(void);
 // Altas
@@ -24,7 +22,7 @@ void menuFuncionesEspeciales(struct Persona *ptr);
 
 int menuPrincipal(void) {
     int op;
-    printf("Menú principal\n");
+    printf("\n--- Menú principal ---\n");
     printf("1. Altas\n");
     printf("2. Bajas\n");
     printf("3. Mostrar\n");
@@ -38,7 +36,7 @@ int menuPrincipal(void) {
 void menuAltas(struct Persona **ptr) {
     int op;
     do {
-        printf("\n--- ALTAS ---\n");
+        printf("\n--- Altas ---\n");
         printf("1. Una Persona\n");
         printf("2. Varias Personas\n");
         printf("3. Volver\n");
@@ -68,7 +66,7 @@ void menuAltas(struct Persona **ptr) {
 void menuMostrar(struct Persona *ptr) {
     int op;
     do {
-        printf("\n--- MOSTRAR ---\n");
+        printf("\n--- Mostrar ---\n");
         printf("1. Todas\n");
         printf("2. Por Carrera\n");
         printf("3. Por Semestre\n");
@@ -108,7 +106,7 @@ void menuMostrar(struct Persona *ptr) {
 void menuBajas(struct Persona **ptr) {
     int op;
     do {
-        printf("\n--- BAJAS ---\n");
+        printf("\n--- Bajas ---\n");
         printf("1. Una Persona (primera)\n");
         printf("2. Varias Personas\n");
         printf("3. Todas\n");
@@ -136,18 +134,20 @@ void menuBajas(struct Persona **ptr) {
 void menuFuncionesEspeciales(struct Persona *ptr) {
     int op;
     do {
-        printf("\n--- FUNCIONES ESPECIALES ---\n");
-        printf("1. Calificaciones\n");
-        printf("2. Modificar (por matricula)\n");
+        printf("\n--- Funciones Especiales ---\n");
+        printf("1. Modificar (por matricula)\n");
+        printf("2. Calificaciones\n");
         printf("3. Volver\n");
         printf("Opcion: ");
         scanf("%d", &op);
         switch (op) {
             case 1:
-				//menuCalificaciones(ptr);
+				printf("En mantenimiento, disculpe las molestias.\n");
+				//menuModificar(ptr);
 				break;
-            case 2:
-				//ModificarPorMatricula(ptr);
+			case 2:
+				printf("En mantenimiento, disculpe las molestias.\n");
+				//menuCalificaciones(ptr);
 				break;
             case 3:
 				break;
@@ -156,3 +156,41 @@ void menuFuncionesEspeciales(struct Persona *ptr) {
         }
     } while (op != 3);
 }
+
+/*void menuModificar(struct Persona *ptr) {
+    char matricula[10];
+    struct Persona *alumno = NULL;
+
+    printf("\nIngrese la matricula del alumno: ");
+    scanf("%9s", matricula);
+
+    alumno = buscarPorMatricula(ptr, matricula);
+
+    if (alumno == NULL) {
+        printf("No se encontro un alumno con matricula '%s'.\n", matricula);
+        return;
+    } else {
+		printf("\n--- MODIFICAR ---\n");
+		printf("Alumno: %s - %s\n", alumno->nombre, alumno->ptrAlum->matricula);    int op;
+
+		do {
+			printf("\n1. Calificaciones del alumno\n");
+			printf("2. Datos\n");
+			printf("3. Volver\n");
+			printf("Opcion: ");
+			scanf("%d", &op);
+			switch (op) {
+				case 1:
+                	menuCalificacionesAlumno(alumno);
+                	break;
+				case 2:
+                	menuDatos(alumno);
+                	break;
+				case 3:
+                	break;
+				default:
+                	printf("Opcion no valida.\n");
+			}
+		} while (op != 3);
+	}
+}*/

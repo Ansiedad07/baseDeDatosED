@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-void Altas(struct Persona **ptr);
-
 void Altas(struct Persona **ptr){
     struct Persona *ptrNew;
     struct Persona *ptrAux = *ptr;
@@ -11,84 +9,95 @@ void Altas(struct Persona **ptr){
     char nombreTemp[100];
     char carreraTemp[100];
 
-    ptrNew = (struct Persona *)malloc(sizeof(struct Persona));
+    ptrNew = malloc(sizeof(struct Persona));
+
     if(ptrNew == NULL){
-        printf("Error al asignar memoria para Persona.\n");
+        printf("Error al asignar memoria.\n");
         return;
-    } else {
-    	ptrNew->ptrSig = NULL;
-    	/* Reservar memoria para Alumno */
-    	ptrNew->ptrAlum = (struct Alumno *)malloc(sizeof(struct Alumno));
-    	if(ptrNew->ptrAlum == NULL){
-    	    printf("Error al asignar memoria para Alumno.\n");
-    	    free(ptrNew);
-    	    return;
-    	}
+    }
 
-    	/* Datos de la persona */
-    	printf("\nNombre: ");
-    	scanf(" %[^\n]", nombreTemp);
-    	ptrNew->nombre = (char *)malloc(strlen(nombreTemp) + 1);
+    ptrNew->ptrSig = NULL;
 
-    	if(ptrNew->nombre == NULL){
-    	    printf("Error al asignar memoria.\n");
-    	    free(ptrNew->ptrAlum);
-    	    free(ptrNew);
-    	    return;
-    	}
-    	strcpy(ptrNew->nombre, nombreTemp);
+    ptrNew->ptrAlum = malloc(sizeof(struct Alumno));
 
-   		printf("Ingrese la edad: ");
-		scanf("%d", &ptrNew->edad);
+    if(ptrNew->ptrAlum == NULL){
+        printf("Error al asignar memoria para Alumno.\n");
+        free(ptrNew);
+        return;
+    }
 
-		printf("Ingrese el genero (M/F): ");
-		scanf(" %c", &ptrNew->genero);
+    /* Limpiar buffer antes de fgets */
+    while(getchar() != '\n');
 
-		printf("Ingrese la fecha de nacimiento (DD/MM/AA): ");
-		scanf("%s", ptrNew->fn);
+    /* Nombre */
+    printf("\nNombre: ");
+    fgets(nombreTemp, sizeof(nombreTemp), stdin);
 
-    	/* ========= DATOS ALUMNO ========= */
-    	printf("Matricula: ");
-    	scanf("%s", ptrNew->ptrAlum->matricula);
+    nombreTemp[strcspn(nombreTemp, "\n")] = '\0';
 
-    	printf("Carrera: ");
-    	scanf(" %[^\n]", carreraTemp);
-    	ptrNew->ptrAlum->carrera = (char *)malloc(strlen(carreraTemp) + 1);
-    	if(ptrNew->ptrAlum->carrera == NULL){
-    	    printf("Error al asignar memoria.\n");
-    	    free(ptrNew->nombre);
-    	    free(ptrNew->ptrAlum);
-    	    free(ptrNew);
-    	    return;
-    	}
-    	strcpy(ptrNew->ptrAlum->carrera, carreraTemp);
+    ptrNew->nombre = malloc(strlen(nombreTemp)+1);
 
-    	printf("Semestre: ");
-    	scanf("%d", &ptrNew->ptrAlum->semestre);
+    if(ptrNew->nombre == NULL){
+        printf("Error al asignar memoria.\n");
+        free(ptrNew->ptrAlum);
+        free(ptrNew);
+        return;
+    }
 
-    	printf("Correo institucional: ");
-    	scanf("%22s", ptrNew->ptrAlum->correoi);
+    strcpy(ptrNew->nombre, nombreTemp);
 
-    	/* ========= CALIFICACIONES ========= */
-    	printf("\nIngrese las calificaciones:\n");
-    	for(int i = 0; i < 5; i++){
-    	    printf("\nMateria %d\n", i + 1);
-    	    for(int j = 0; j < 5; j++){
-    	        printf("Calificacion %d: ", j + 1);
-    	        scanf("%f", &ptrNew->ptrAlum->calif[i][j]);
-    	    }
-    	}
+    printf("Edad: ");
+    scanf("%d",&ptrNew->edad);
 
-    	/* ========= INSERTAR EN COLA ========= */
-    	if(*ptr == NULL){
-    	    *ptr = ptrNew;
-    	} else {
-    	    while(ptrAux->ptrSig != NULL){
-    	        ptrAux = ptrAux->ptrSig;
-    	    }
-    	    ptrAux->ptrSig = ptrNew;
-    	}
+    printf("Genero (M/F): ");
+    scanf(" %c",&ptrNew->genero);
 
-    	printf("\nRegistro agregado correctamente.\n");
-	}
+    printf("Fecha nacimiento (DD/MM/AA): ");
+    scanf("%s",ptrNew->fn);
+
+    printf("Matricula: ");
+    scanf("%s",ptrNew->ptrAlum->matricula);
+
+    while(getchar()!='\n');
+
+    /* Carrera */
+    printf("Carrera: ");
+    fgets(carreraTemp,sizeof(carreraTemp),stdin);
+    carreraTemp[strcspn(carreraTemp,"\n")] = '\0';
+    ptrNew->ptrAlum->carrera = malloc(strlen(carreraTemp)+1);
+
+    if(ptrNew->ptrAlum->carrera == NULL){
+        printf("Error al asignar memoria.\n");
+        free(ptrNew->nombre);
+        free(ptrNew->ptrAlum);
+        free(ptrNew);
+        return;
+    }
+    strcpy(ptrNew->ptrAlum->carrera,carreraTemp);
+
+    printf("Semestre: ");
+    scanf("%d",&ptrNew->ptrAlum->semestre);
+
+    printf("Correo institucional: ");
+    scanf("%s",ptrNew->ptrAlum->correoi);
+
+    printf("\nCalificaciones:\n");
+    for(int i=0;i<5;i++){
+        printf("\nMateria %d\n",i+1);
+        for(int j=0;j<5;j++){
+            printf("Calificacion %d: ",j+1);
+            scanf("%f",&ptrNew->ptrAlum->calif[i][j]);
+        }
+    }
+
+    if(*ptr==NULL){
+        *ptr=ptrNew;
+    }else{
+        while(ptrAux->ptrSig!=NULL){
+            ptrAux=ptrAux->ptrSig;
+        }
+        ptrAux->ptrSig=ptrNew;
+    }
+
+    printf("\nRegistro agregado correctamente.\n");
 }
