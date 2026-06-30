@@ -33,34 +33,31 @@ int main(void) {
 
         switch (opcion) {
         case 1:
-            Altas(&ptr);
+            menuAltas(&ptr);
             break;
-        case 2:
-            Bajas(&ptr);
+		case 2:
+			menuBajas(&ptr);
             break;
-        case 3:
-            Mostrar(ptr);
+		case 3:
+            menuMostrar(ptr);
             break;
-        case 4:
-            printf("Funciones Especiales - En desarrollo\n");
-            break;
+		case 4:
+			menuFuncionesEspeciales(ptr);
+			break;
         case 5:
             printf("Saliendo...\n");
-            while (ptr != NULL) {
-                struct Persona *temp = ptr;
-                ptr = ptr->ptrSig;
-                if (temp->nombre != NULL)
-                    free(temp->nombre);
-                if (temp->ptrAlum != NULL) {
-                    if (temp->ptrAlum->carrera != NULL)
-                        free(temp->ptrAlum->carrera);
-                    free(temp->ptrAlum);
-                }
-                free(temp);
-            }
+			while (ptr != NULL) {
+				struct Persona *temp = ptr;
+				ptr = ptr->ptrSig;
+				if (temp->nombre != NULL)
+					free(temp->nombre);
+				if (temp->ptrAlum != NULL)
+					free(temp->ptrAlum);
+				free(temp);
+			}
             break;
         default:
-            printf("Opcion no valida.\n");
+		printf("Opcion no valida.\n");
         }
     } while (opcion != 5);
 

@@ -1,89 +1,87 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void Bajas(struct Persona **);
-void bajaUnaPersona(struct Persona **);
-void bajaVariasPersonas(struct Persona **);
-void bajaTodasPersonas(struct Persona **);
+/* PROTOTIPOS */
 
-void bajaUnaPersona(struct Persona **ptr) {
-	if (*ptr == NULL) {
-		printf("La cola esta vacia.\n");
-		return;
-	}
+void BajaUna(struct Persona **ptr);
+void BajaVarias(struct Persona **ptr);
+void BajaTodas(struct Persona **ptr);
 
-	struct Persona *temp = *ptr;
-	*ptr = temp->ptrSig;
+/* ELIMINAR UNA PERSONA */
 
-	printf("Eliminando a: %s\n", temp->nombre);
+void BajaUna(struct Persona **ptr){
 
-	if (temp->nombre != NULL)
-		free(temp->nombre);
-	if (temp->ptrAlum != NULL) {
-		if (temp->ptrAlum->carrera != NULL)
-			free(temp->ptrAlum->carrera);
-		free(temp->ptrAlum);
-	}
-	free(temp);
+    if(*ptr == NULL){
+        printf("La cola esta vacia.\n");
+        return;
+    }
 
-	printf("Persona eliminada.\n");
+    struct Persona *temp = *ptr;
+
+    *ptr = temp->ptrSig;
+
+    printf("\nEliminando a: %s\n", temp->nombre);
+
+    /* Liberar nombre */
+    if(temp->nombre != NULL)
+        free(temp->nombre);
+
+    /* Liberar Alumno */
+    if(temp->ptrAlum != NULL){
+
+        if(temp->ptrAlum->carrera != NULL)
+            free(temp->ptrAlum->carrera);
+
+        free(temp->ptrAlum);
+    }
+
+    free(temp);
+
+    printf("Persona eliminada correctamente.\n");
 }
 
-void bajaVariasPersonas(struct Persona **ptr) {
-	char continuar;
-	do {
-		bajaUnaPersona(ptr);
-		if (*ptr != NULL) {
-			printf("Desea eliminar otra persona? (s/n): ");
-			scanf(" %c", &continuar);
-		} else {
-			printf("La cola esta vacia.\n");
-			continuar = 'n';
-		}
-	} while ((continuar == 's' || continuar == 'S') && *ptr != NULL);
+/* ELIMINAR VARIAS PERSONAS */
+
+void BajaVarias(struct Persona **ptr){
+
+    int cantidad;
+
+    if(*ptr == NULL){
+        printf("La cola esta vacia.\n");
+        return;
+    }
+
+    printf("Cuantas personas desea eliminar: ");
+    scanf("%d", &cantidad);
+
+    if(cantidad <= 0){
+        printf("Cantidad invalida.\n");
+        return;
+    }
+
+    for(int i = 0; i < cantidad; i++){
+
+        if(*ptr == NULL){
+            printf("\nYa no hay mas personas en la cola.\n");
+            break;
+        }
+
+        BajaUna(ptr);
+    }
 }
 
-void bajaTodasPersonas(struct Persona **ptr) {
-	if (*ptr == NULL) {
-		printf("La cola esta vacia.\n");
-		return;
-	}
+/* ELIMINAR TODA LA COLA */
 
-	while (*ptr != NULL) {
-		struct Persona *temp = *ptr;
-		*ptr = temp->ptrSig;
+void BajaTodas(struct Persona **ptr){
 
-		if (temp->nombre != NULL)
-			free(temp->nombre);
-		if (temp->ptrAlum != NULL) {
-			if (temp->ptrAlum->carrera != NULL)
-				free(temp->ptrAlum->carrera);
-			free(temp->ptrAlum);
-		}
-		free(temp);
-	}
+    if(*ptr == NULL){
+        printf("La cola esta vacia.\n");
+        return;
+    }
 
-	printf("Todas las personas han sido eliminadas.\n");
-}
+    while(*ptr != NULL){
+        BajaUna(ptr);
+    }
 
-void Bajas(struct Persona **ptr) {
-	int op;
-	do {
-		op = menuBajas();
-		switch (op) {
-			case 1:
-				bajaUnaPersona(ptr);
-				break;
-			case 2:
-				bajaVariasPersonas(ptr);
-				break;
-			case 3:
-				bajaTodasPersonas(ptr);
-				break;
-			case 4:
-				break;
-			default:
-				printf("Opcion no valida.\n");
-		}
-	} while (op != 4);
+    printf("\nToda la cola ha sido eliminada.\n");
 }
