@@ -3,22 +3,23 @@
 #include <string.h>
 
 int menuPrincipal(void);
+// Altas
 void menuAltas(struct Persona **ptr);
-void Altas(struct Persona **);
-
-void menuMostrar(struct Persona *ptr);
-void MostrarTodas(struct Persona *);
-void MostrarPorCarrera(struct Persona *);
-void MostrarPorSemestre(struct Persona *);
-void MostrarPorCarreraYSemestre(struct Persona *);
-void MostrarPorNombre(struct Persona *);
-void MostrarPorMatricula(struct Persona *);
-
+void Altas(struct Persona **ptr);
+// Bajas
 void menuBajas(struct Persona **ptr);
-void BajaUna(struct Persona **);
-void BajaVarias(struct Persona **);
-void BajaTodas(struct Persona **);
-
+void BajaUna(struct Persona **ptr);
+void BajaVarias(struct Persona **ptr);
+void BajaTodas(struct Persona **ptr);
+// Mostrar
+void menuMostrar(struct Persona *ptr);
+void MostrarTodas(struct Persona *ptr);
+void MostrarPorCarrera(struct Persona *ptr);
+void MostrarPorSemestre(struct Persona *ptr);
+void MostrarPorCarreraYSemestre(struct Persona *ptr);
+void MostrarPorNombre(struct Persona *ptr);
+void MostrarPorMatricula(struct Persona *ptr);
+// Funciones Especiales
 void menuFuncionesEspeciales(struct Persona *ptr);
 
 int menuPrincipal(void) {

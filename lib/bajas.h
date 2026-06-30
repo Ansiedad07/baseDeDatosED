@@ -1,25 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* PROTOTIPOS */
-
 void BajaUna(struct Persona **ptr);
 void BajaVarias(struct Persona **ptr);
 void BajaTodas(struct Persona **ptr);
 
-/* ELIMINAR UNA PERSONA */
-
+/* Eliminar una persona */
 void BajaUna(struct Persona **ptr){
-
     if(*ptr == NULL){
         printf("La cola esta vacia.\n");
         return;
     }
 
     struct Persona *temp = *ptr;
-
     *ptr = temp->ptrSig;
-
     printf("\nEliminando a: %s\n", temp->nombre);
 
     /* Liberar nombre */
@@ -28,22 +22,18 @@ void BajaUna(struct Persona **ptr){
 
     /* Liberar Alumno */
     if(temp->ptrAlum != NULL){
-
         if(temp->ptrAlum->carrera != NULL)
             free(temp->ptrAlum->carrera);
-
         free(temp->ptrAlum);
     }
 
     free(temp);
-
     printf("Persona eliminada correctamente.\n");
 }
 
-/* ELIMINAR VARIAS PERSONAS */
+/* Eliminar varias personas */
 
 void BajaVarias(struct Persona **ptr){
-
     int cantidad;
 
     if(*ptr == NULL){
@@ -60,20 +50,16 @@ void BajaVarias(struct Persona **ptr){
     }
 
     for(int i = 0; i < cantidad; i++){
-
         if(*ptr == NULL){
             printf("\nYa no hay mas personas en la cola.\n");
             break;
         }
-
         BajaUna(ptr);
     }
 }
 
-/* ELIMINAR TODA LA COLA */
-
+/* Eliminar toda la cola */
 void BajaTodas(struct Persona **ptr){
-
     if(*ptr == NULL){
         printf("La cola esta vacia.\n");
         return;

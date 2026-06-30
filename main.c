@@ -19,6 +19,7 @@ struct Persona {
     struct Persona *ptrSig;
 };
 
+#include "lib/funciones_especiales.h"
 #include "lib/menus.h"
 #include "lib/altas.h"
 #include "lib/bajas.h"
